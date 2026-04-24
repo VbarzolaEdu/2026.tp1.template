@@ -6,10 +6,10 @@
 ### Datos del Alumno
 
 | Campo | Respuesta |
-| :--- | :--- |
-| **Nombre** | |
-| **Apellido** | |
-| **Legajo** | |
+| :--- |:----------|
+| **Nombre** | Valentin  |
+| **Apellido** | Barzola   |
+| **Legajo** | 63136     |
 
 > **Fecha de entrega:** 28 de Abril de 2026
 
