@@ -1,7 +1,9 @@
-package main.java.com.bibliotech;
+package com.bibliotech;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Bienvenido a BiblioTech 🚀");
+    public class main {
+        public static void main(String[] args) {
+            System.out.println("Bienvenido a BiblioTech 🚀");
+        }
     }
 }
