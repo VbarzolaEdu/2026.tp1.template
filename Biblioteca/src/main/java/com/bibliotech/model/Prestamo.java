@@ -5,7 +5,7 @@ import java.util.Optional;
 
 
 public record Prestamo(String isbnLibro,
-                       int SocioId,
-                       LocalDate fechaprestamo,
+                       int socioId,
+                       LocalDate fechaPrestamo,
                        Optional<LocalDate> fechaDevolucion) {}
 
