@@ -65,4 +65,28 @@ public class PrestamoService {
 
         prestamoRepo.guardar(prestamo);
     }
+
+    public void devolverLibro(String isbn, int socioId) {
+
+        // 1. buscar préstamo activo
+        Prestamo prestamoActivo = prestamoRepo.buscarTodos().stream()
+                .filter(p ->
+                        p.isbnLibro().equals(isbn) &&
+                                p.socioId() == socioId &&
+                                p.fechaDevolucion().isEmpty()
+                )
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No existe préstamo activo"));
+
+        // 2. crear nuevo préstamo con fecha de devolución
+        Prestamo prestamoDevuelto = new Prestamo(
+                prestamoActivo.isbnLibro(),
+                prestamoActivo.socioId(),
+                prestamoActivo.fechaPrestamo(),
+                Optional.of(LocalDate.now())
+        );
+
+        // 3. guardar (sobrescribe el anterior)
+        prestamoRepo.guardar(prestamoDevuelto);
+    }
 }
