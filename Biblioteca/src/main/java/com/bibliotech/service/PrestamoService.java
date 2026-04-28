@@ -2,6 +2,7 @@ package com.bibliotech.service;
 
 import com.bibliotech.model.*;
 import com.bibliotech.repository.Repository;
+import com.bibliotech.exceptions.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -26,11 +27,11 @@ public class PrestamoService {
 
         // 1. validar libro
         Libro libro = libroRepo.buscarPorId(isbn)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+                .orElseThrow(() -> new LibroNoEncontradoException(isbn));
 
         // 2. validar socio
         Socio socio = socioRepo.buscarPorId(socioId)
-                .orElseThrow(() -> new RuntimeException("Socio no encontrado"));
+                .orElseThrow(() -> new SocioNoEncontradoException(socioId));
 
         // 3. validar disponibilidad
         boolean prestado = prestamoRepo.buscarTodos().stream()
@@ -40,7 +41,7 @@ public class PrestamoService {
                 );
 
         if (prestado) {
-            throw new RuntimeException("Libro ya prestado");
+            throw new LibroYaPrestadoException(isbn);
         }
 
         // 4. validar límite
@@ -52,7 +53,7 @@ public class PrestamoService {
                 .count();
 
         if (prestamosActivos >= socio.limitePrestamos()) {
-            throw new RuntimeException("Límite de préstamos alcanzado");
+            throw new LimitePrestamosException(socioId);
         }
 
         // 5. crear préstamo
@@ -76,7 +77,7 @@ public class PrestamoService {
                                 p.fechaDevolucion().isEmpty()
                 )
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No existe préstamo activo"));
+                .orElseThrow(() -> new PrestamoNoEncontradoException());
 
         // 2. crear nuevo préstamo con fecha de devolución
         Prestamo prestamoDevuelto = new Prestamo(
